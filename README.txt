@@ -1,12 +1,10 @@
-I. NDN_QoS
+I. ndnQoS
 ===========
 
 1. Code Checkout:
 ----------------
-git clone https://github.com/anjujames33/NDN_QoS.git	// Clone ns3 alone OR
-git clone -b qos https://github.com/anjujames33/NDN_QoS.git	// To checkout qos branch
-cd NDN_QoS/	// Move to NDN_QoS directory
-git clone --recursive https://github.com/anjujames33/ndnSIM.git ns-3/src/ndnSIM	// Clone ndnSIM, NFD and ndn-cxx
+git clone -recursive https://github.com/nsol-nmsu/ndnQoS.git
+cd ndnQoS/	// Move to ndnQoS directory
 
 2. Check branch details (make sure you are in 'qos' branch in NDN_QoS, ndnSIM, NFD and ndn-cxx folders)
 -----------------------
@@ -32,7 +30,7 @@ git push origin qos	// Pushing the code to remote branch
 5.Run QoS enabled Simulation
 ----------------------------
 cd ns-3
-NS_LOG=ndn.Consumer:ndn.Producer ./waf --run=ndn-qos
+NS_LOG=ndn.Consumer:ndn.Producer ./waf --run=ndn-20node-power
 
 
 
@@ -42,7 +40,6 @@ II. Folder Structure
 2. process_result	- Python scripts for simulations and result processing.
 3. thirdparty		- Thirdparty libraries used (Required to build the code without error)
 4. topology			- Topology files for Monte Carlo simulations used in scenario files
-5. clients			- Python clients to connect from windows machine to test 123-bus system.
 
 
 III. New files (New Mexico State University)
@@ -58,29 +55,19 @@ III. New files (New Mexico State University)
 	ndn-token-bucket.hpp
 	qos-strategy.cpp
 	qos-strategy.hpp
-	TBucket.cpp
-	TBucket.hpp
+	TBucketDebug.cpp
+	TBucketDebug.hpp
 
 2. ns-3/src/ndnSIM/apps
 
-	ConsumedTokens.cpp
-	ConsumedTokens.hpp
-	ndn-aggregator.cpp
-	ndn-aggregator.hpp
-	ndn-subscriber.cpp
-	ndn-subscriber.hpp
-	ndn-subscriber-sync.cpp
-	ndn-subscriber-sync.hpp
-	ndn-synchronizer.cpp
-	ndn-synchronizer.hpp
-	ndn-synchronizer-socket.cpp
-	ndn-synchronizer-socket.hpp
-	parser-OpenDSS.cpp
-	parser-OpenDSS.hpp
-	parser-ReDisPv.cpp
-	parser-ReDisPv.hpp
-	token-bucket.cpp
-	token-bucket.hpp
+	TBucketRef.cpp
+	TBucketRef.hpp
+	ndn-QoS-consumer.cpp
+	ndn-QoS-consumer.hpp
+        ndn-QoS-producer.cpp
+        ndn-QoS-producer.hpp
+	tokenBucketDriver.cpp
+	tokenBucketDriver.hpp
 
 IV . Documentation
 ==================

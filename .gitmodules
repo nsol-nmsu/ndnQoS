@@ -1,0 +1,3 @@
+[submodule "ns-3/src/ndnSIM"]
+	path = ns-3/src/ndnSIM
+	url = https://github.com/nsol-nmsu/ndnSIM-QoS

@@ -1,0 +1,101 @@
+Project Overview
+****************
+In this project, we implemented, a QoS-aware network architecture that aims to satisfy the low latency, high bandwidth, and high reliability requirements of communications by extending the features of NDN. We categorize traffic into three priority classes (high, medium, and low priority) to enable preferential treatment of traffic flows. Three classes are identified based on smart grid attributes: (i)protection traffic, which requires low latency and high reliability, (ii)control traffic: that needs high reliability, and (iii)best-effort traffic: which does not impose stringent requirements.
+
+Our key contributions include: 
+=============================
+
+A. Namespace Design:
+--------------------
+We use the NDN’s naming feature to categorize applications traffic into three priority classes for preferential treatment of traffic.  In particular, the first class (Type I) includes the traffic flows directed to the PDCs(“/IEEE-39/TypeI/PDC”) which are high priority protection and control signals. The second class (Type II) includes the traffic flows to the WACs (“/IEEE-39/TypeII/WAC”), which are considered as the medium priority for control and information signals.  The last class (Type III) includes other traffic flows, such as background and congestion information (“/IEEE-39/TypeIII/BGD”), which will be treated as low priority traffic. 
+
+Implementation: 
+1. ns-3/src/ndnSIM/examples/
+    ndn-20node-power.cpp 
+2. topology/
+    Topo20-power.tx (topology file for network simulation)
+
+
+B. Multi-Queuing Mechanism: 
+---------------------------
+We implemented a queuing mechanism such that each node will be assigned three input queues and one output queue per interface. All the packets are classified into one of the three priorities classes based on the differentiated service code point (DSCP) value that we encoded into the naming convention. The packets, upon arrival to an interface, will be classified and enqueued based on their priority classes. Then packets are processed using the weighted fair queuing (WFQ) discipline.  In WFQ, incoming traffic flows will be assigned with weights proportional to their priority classes.  When a packet is processed by an input queue, our QoS-aware strategy selects an outgoing interface and forwards the packet towards the destination through the selected interface(s). To regulate traffic and ensure QoS, we use the token bucket algorithm for each queue with different token generation rate corresponding to the priority class of the queue. Each queue will be associated with a token bucket that has a fixed tokencapacity (b) and a token generation rate (r) per unit time. The highest token generation rate is assigned to high priority queues and the lowest token generation rate is assigned to low priority queues. In the case that the bucket is full, additional generated tokens will be dropped from the bucket.
+
+Implementation: 
+1. ns-3/src/ndnSIM/NFD/daemon/fw/ 
+    ndn-priority-tx-queue.hpp
+    ndn-priority-tx-queue.cpp
+    TBucketDebug.hpp
+    TBucketDebug.cpp
+    ndn-qos-queue.hpp
+    ndn-qos-queue.cpp   
+    ndn-token-bucket.hpp  
+    ndn-token-bucket.cpp
+2. ns-3/src/ndnSIM/apps
+	  TBucketRef.cpp
+	  TBucketRef.hpp
+          tokenBucketDriver.cpp
+          tokenBucketDriver.hpp
+
+C. QoS-aware Forwarding Strategy:
+---------------------------------
+We designed a QoS-aware forwarding strategy that uses a combination of multicast and unicast packet forwarding models.  The primary objective of using such a hybrid forwarding model is to satisfy the diverse requirements (e.g., latency, bandwidth, and reliability) of traffic classes.  To forward   a   packet, our QoS-aware forwarding strategy first dequeues a packet from one of the three queues of an interface using the WFQ algorithm.  The strategy, then, checks the corresponding bucket for a token. Finally, it forwards the packet towards the outgoing interface(s) if at least one token is available in the corresponding bucket. Packets will not be dequeued from a queue when there are either no available tokens, or the link is currently full. A packet will dequeued and forwarded as soon as a new token is generated.
+
+Implementation: 
+1. ns-3/src/ndnSIM/NFD/daemon/fw/ 
+    qos-strategy.cpp
+    qos-strategy.hpp 
+
+
+
+Folder Structure
+****************
+1. ns-3           - Code base for ns-3 simulator.
+2. process_result	- Python scripts for simulations and result processing.
+3. thirdparty		  - Thirdparty libraries used (Required to build the code without error).
+4. topology			  - Topology files for scenario files.
+5. ns-3/src/ndnSIM- Code base for ndn.
+
+
+
+Documentation
+**************
+Detailed documentation of each class and its relationships are available in ns-3/src/ndnSIM/docs/html/ folder.
+Open index.html in browser and you will be able to find the documentation similar to ns-3/ndnSIM.
+
+
+
+Code Download
+*************
+
+1. Code Checkout:
+----------------
+git clone --recursive  https://github.com/nsol-nmsu/ndnQoS.git	
+cd ndnQoS/	// Move to ndnQoS directory
+
+2. Check branch details (make sure you are in 'qos' branch in NDN_QoS, ndnSIM, NFD and ndn-cxx folders)
+-----------------------
+git branch -a	// Show all branches and the current branch with * symbol.
+git remote -v	// Display git url
+
+3. Build code
+-------------
+cd ns-3/	// Move to ns-3 directory
+./waf configure --enable-examples	// configure with examples
+./waf	// build code once
+
+4. Pushing the code
+-------------------
+git branch -a	// Make sure you are in proper branch(qos) before making modifications.
+git checkout <branch_name>	// To checkout to a spacific branch
+git status	// In modified git directory(ndnSIM,NFD,ndn-cxx) will show modified or new file in red color
+git add .	// Add all modified files to repository or select individual files instead of dot to add that file alone.
+git status	// All the files added to git will change color to green. If something is not added, will remain in red color
+git commit -m "Add meaningful comment summerizing the modification made"	// Code commiting locally
+git push origin qos	// Pushing the code to remote branch
+
+5.Run QoS enabled Simulation
+----------------------------
+cd ns-3
+NS_LOG=ndn.Consumer:ndn.Producer ./waf --run=ndn-20node-power
+
+
