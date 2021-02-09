@@ -1,0 +1,18 @@
+Waf: Entering directory `/home/george/ndnQoS/ns-3/build'
+Waf: Leaving directory `/home/george/ndnQoS/ns-3/build'
+Build commands will be stored in build/compile_commands.json
+'build' finished successfully (5.102s)
+All done setting up
+WARNING: Interest.CanBePrefix will be set to 0 in the near future. Please declare a preferred setting via Interest::setDefaultCanBePrefix.WARNING: Interest.CanBePrefix will be set to 0 in the near future. Please declare a preferred setting via Interest::setDefaultCanBePrefix.The simulation took 498.319
+Waf: Entering directory `/home/george/ndnQoS/ns-3/build'
+Waf: Leaving directory `/home/george/ndnQoS/ns-3/build'
+Build commands will be stored in build/compile_commands.json
+'build' finished successfully (4.946s)
+All done setting up
+WARNING: Interest.CanBePrefix will be set to 0 in the near future. Please declare a preferred setting via Interest::setDefaultCanBePrefix.WARNING: Interest.CanBePrefix will be set to 0 in the near future. Please declare a preferred setting via Interest::setDefaultCanBePrefix.Command ['/home/george/ndnQoS/ns-3/build/src/ndnSIM/examples/ns3-dev-ndn-case39cyber-optimized'] terminated with signal SIGTERM. Run it under a debugger to get more information (./waf --run <program> --command-template="gdb --args %s <args>").
+Waf: Entering directory `/home/george/ndnQoS/ns-3/build'
+Waf: Leaving directory `/home/george/ndnQoS/ns-3/build'
+Build commands will be stored in build/compile_commands.json
+'build' finished successfully (4.894s)
+All done setting up
+WARNING: Interest.CanBePrefix will be set to 0 in the near future. Please declare a preferred setting via Interest::setDefaultCanBePrefix.WARNING: Interest.CanBePrefix will be set to 0 in the near future. Please declare a preferred setting via Interest::setDefaultCanBePrefix.The simulation took 58.8097
