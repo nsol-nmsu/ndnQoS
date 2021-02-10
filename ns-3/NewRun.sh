@@ -15,7 +15,7 @@ do
 	wait
 	echo "Finished for $Test at $(date)!"
 	#echo "All Simulations Complete"
-
+break
 done < $input
 echo "All Simulations Complete for New Run"
                   
