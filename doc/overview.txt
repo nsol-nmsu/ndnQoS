@@ -1,6 +1,8 @@
 Project Overview
 ****************
-In this project, we implemented, a QoS-aware network architecture that aims to satisfy the low latency, high bandwidth, and high reliability requirements of communications by extending the features of NDN. We categorize traffic into three priority classes (high, medium, and low priority) to enable preferential treatment of traffic flows. Three classes are identified based on smart grid attributes: (i)protection traffic, which requires low latency and high reliability, (ii)control traffic: that needs high reliability, and (iii)best-effort traffic: which does not impose stringent requirements.
+This codebase implements a Quality of Service (QoS) aware network architecture that aims to satisfy the low latency, high bandwidth, and high reliability requirements of communications by extending the features of NDN. We categorize traffic into three priority classes (high, medium, and low priority) to enable preferential treatment of 
+traffic flows. Three classes are identified based on attributed of several smart grid applications as use cases: (i) protection traffic, which requires low latency and high reliability, (ii) control traffic: that needs high reliability, and (iii) best-effort traffic: which does not impose stringent requirements. More information about the 
+codebase can be obtained from the content in the docs folder.
 
 Our key contributions include: 
 =============================
