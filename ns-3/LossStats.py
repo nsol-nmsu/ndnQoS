@@ -48,16 +48,19 @@ def main(filepath=None, maxSuccess=None):
                     latency_count[flowcls] = 0
                     lossCount[flowcls] = 0
                 latency_count[flowcls] += 1
-                print(timerecv)
-                if timerecv == "400.000000000":
+                #print(timerecv)
+                if timerecv == "7500.000000000":
                    lossCount[flowcls] += 1
 
-        print ("TypeI" +": " +str(latency_count["TypeI"]));
-        print ("TypeII" +": " +str(latency_count["TypeII"]));
-        print ("TypeIII" +": " +str(latency_count["TypeIII"]));
-        f.write(str(lossCount["TypeI"]/latency_count["TypeI"])+",")
-        f.write(str(lossCount["TypeII"]/latency_count["TypeII"])+",")
-        f.write(str(lossCount["TypeIII"]/latency_count["TypeIII"])+"\n")
+        #print ("TypeI" +": " +str(latency_count["TypeI"]));
+        #print ("TypeII" +": " +str(latency_count["TypeII"]));
+        #print ("TypeIII" +": " +str(latency_count["TypeIII"]));
+        if "TypeI" in lossCount:
+            f.write(str(lossCount["TypeI"]/latency_count["TypeI"])+",")
+        if "TypeII" in lossCount:            
+            f.write(str(lossCount["TypeII"]/latency_count["TypeII"])+",")
+        if "TypeIII" in lossCount:        
+            f.write(str(lossCount["TypeIII"]/latency_count["TypeIII"])+"\n")
 
 
     return 0

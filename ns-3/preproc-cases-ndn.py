@@ -37,8 +37,11 @@ def main(infile):
         nodeid = int(nodeid)
         payloadsize = int(payloadsize)
         time = float(time)
+        if "attacker/" in name:
+                continue        
         cls = gettype(name)
-        
+
+
         if event == "sent":
             
             # pub-sub flow needs different handling due to multisource multicast
@@ -81,6 +84,7 @@ def main(infile):
             deliveredCount[cls] += 1
             deliveredSize[cls]  += ps1
             latlog.write("%d %d %.9f %.9f %.9f %s %s\n" % (sn1, nodeid, t1, time, latency, cls, name))
+            outstanding.pop(name)
             if name not in list_processed:
                 list_processed[name] = []
 	    list_processed[name].append(str(sn1) + " " + str(nodeid) + " " + str(t1) + " " + str(time) + " " + str(latency) + " " + str(cls) + " " + str(name))
@@ -109,10 +113,11 @@ def main(infile):
         
 
     flowcompleted = False
-    infinitelat = 400
+    infinitelat = 7500
     outcounter = 0
 
     #Process each interest sent according to flow
+    print(len(outstanding))
     for name in outstanding:
 
 	outcounter += 1
@@ -121,12 +126,12 @@ def main(infile):
         #if(name == "/power/typeIII/data15/LC/phy17/%FE%A8"):
         #  print(name)
 
-        if "typeII" in name:
+        if "typeII/" in name:
                 #Check all WAC flows
                 wacsrcnode = outstanding[name][3]
 		wacsrctime = outstanding[name][0]
 		wacpktname = outstanding[name][4]
-
+                
                 for wflow in list_wacflows:
                         flowcompleted = False
                         #If flow exists, check if entry is in the processed list
@@ -141,14 +146,14 @@ def main(infile):
                                                 break
                                 if flowcompleted == False:
                                         #print wacsrcnode, wflow.split(" ")[0], outstanding[name][4], "WAC packet loss!!!"
-					latlog.write("%d %d %.9f %.9f %.9f %s %s\n" % (int(wacsrcnode), int(wflow.split(" ")[0]), float(wacsrctime), infinitelat, infinitelat - float(wacsrctime) , "TypeII", wacpktname))
+			                latlog.write("%d %d %.9f %.9f %.9f %s %s\n" % (int(wacsrcnode), int(wflow.split(" ")[0]), float(wacsrctime), infinitelat, infinitelat - float(wacsrctime) , "TypeII", wacpktname))
 
         if "typeI/" in name:
                 #Check all PDC flows
                 pdcsrcnode = outstanding[name][3]
                 pdcsrctime = outstanding[name][0]
 		pdcpktname = outstanding[name][4]
-
+                
                 for pflow in list_pdcflows:
                         flowcompleted = False
                         #If flow exists, check if entry is in the processed list
@@ -163,7 +168,7 @@ def main(infile):
                                                 break
                                 if flowcompleted == False:
                                         #print pdcsrcnode, pflow.split(" ")[0], outstanding[name][4], "PDC packet loss!!!"
-                                        latlog.write("%d %d %.9f %.9f %.9f %s %s\n" % (int(pdcsrcnode), int(pflow.split(" ")[0]), float(pdcsrctime), infinitelat, infinitelat - float(pdcsrctime) , "TypeI", pdcpktname))
+                	                latlog.write("%d %d %.9f %.9f %.9f %s %s\n" % (int(pdcsrcnode), int(pflow.split(" ")[0]), float(pdcsrctime), infinitelat, infinitelat - float(pdcsrctime) , "TypeI", pdcpktname))
 
 
         if "typeIII" in name:
@@ -175,7 +180,7 @@ def main(infile):
                 for bflow in list_bgdflows:
                         flowcompleted = False
                         #If flow exists, check if entry is in the processed list
-                        if int(bgdsrcnode) == int(bflow.split(" ")[1]) and bflow.split(" ")[3] in name:
+                        if int(bgdsrcnode) == int(bflow.split(" ")[1]):# and bflow.split(" ")[3] in name:
                                 #Verify if flow exist in processed file or not
                                 if name in list_processed:
                                  for procd in list_processed[name]:
